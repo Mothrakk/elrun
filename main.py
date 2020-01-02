@@ -25,10 +25,10 @@ def build_payload(date: str, origin: str, destination: str) -> str:
     payload += destination + '","channel":"web"}'
     return payload
 
-ID_TABLE = {
-    "tallinn":"64-2309-93",
-    "rapla":"64-2309-78"
-}
+with open("stops.json", "r") as fptr:
+    ID_TABLE = {
+        e["stop_name"].lower() : e["stop_area_id"] for e in json.loads(fptr.read())
+    }
 
 ARGS = [x.strip().lower() for x in sys.argv[1:]]
 BODY = '{"date":"' + time.strftime("%Y-%m-%d") + '","origin_stop_area_id":"' + ID_TABLE[ARGS[0]] + '","destination_stop_area_id":"' + ID_TABLE[ARGS[1]] + '","channel":"web"}'
